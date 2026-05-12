@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BagasAice — Cloud & Digital Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════
+       TOKENS & RESET
+    ═══════════════════════════════════════════ */
+    :root {
+      --bg:        #050a0e;
+      --bg2:       #080f14;
+      --surface:   #0d1a22;
+      --surface2:  #112030;
+      --border:    rgba(0,200,160,0.15);
+      --accent:    #00c8a0;
+      --accent2:   #00e5b8;
+      --gold:      #f0b429;
+      --text:      #dce9e4;
+      --muted:     #6a8c80;
+      --heading:   #f0faf5;
+      --r:         14px;
+      --nav-h:     68px;
+      --transition: 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    h1,h2,h3,h4 { font-family: 'Syne', sans-serif; color: var(--heading); line-height: 1.15; }
+    a { color: var(--accent); text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    section { scroll-margin-top: var(--nav-h); }
+
+    /* ═══════════════════════════════════════════
+       NOISE OVERLAY
+    ═══════════════════════════════════════════ */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      background: rgba(5,10,14,0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow var(--transition);
+    }
+    nav.scrolled { box-shadow: 0 4px 40px rgba(0,200,160,0.08); }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--heading);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0; right: 0; height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-cta {
+      background: var(--accent);
+      color: #001a12 !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: background var(--transition), transform var(--transition) !important;
+    }
+    .nav-cta:hover { background: var(--accent2) !important; transform: translateY(-1px); }
+    .nav-cta::after { display: none !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--heading); border-radius: 2px; transition: var(--transition); }
+
+    /* ═══════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════ */
+    #home {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: calc(var(--nav-h) + 4rem) 5% 6rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,200,160,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,160,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%);
+    }
+    .hero-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,200,160,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0,200,160,0.08);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s ease both;
+    }
+    .hero-badge-dot {
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+    .hero-title {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero-title .accent-text {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 560px;
+      font-weight: 300;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      margin-top: 2.5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #001a12;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none; cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,200,160,0.35);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--heading);
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: rgba(0,200,160,0.05);
+      transform: translateY(-2px);
+    }
+    .hero-stats {
+      display: flex; gap: 3rem; flex-wrap: wrap; justify-content: center;
+      margin-top: 5rem;
+      position: relative; z-index: 1;
+      animation: fadeUp 0.6s 0.4s ease both;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ═══════════════════════════════════════════
+       SECTION COMMON
+    ═══════════════════════════════════════════ */
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 6rem 5%; }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 1.25rem;
+    }
+    .section-lead {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 540px;
+      font-weight: 300;
+    }
+    .divider { width: 48px; height: 3px; background: var(--accent); border-radius: 2px; margin: 1.25rem 0; }
+
+    /* ═══════════════════════════════════════════
+       ABOUT
+    ═══════════════════════════════════════════ */
+    #about { background: var(--bg2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3.5rem;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-card-main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card-main::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+    }
+    .about-icon-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .about-icon-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.5rem;
+      padding: 1.25rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      transition: border-color var(--transition);
+    }
+    .about-icon-item:hover { border-color: var(--accent); }
+    .about-icon-item .icon { font-size: 1.6rem; }
+    .about-floating-tag {
+      position: absolute;
+      bottom: -1.5rem; right: -1.5rem;
+      background: var(--gold);
+      color: #1a0e00;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .about-content { }
+    .about-content p { color: var(--muted); font-size: 1rem; margin-bottom: 1rem; font-weight: 300; }
+    .vm-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .vm-block h4 {
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+    .vm-block p { font-size: 0.9rem; color: var(--muted); font-weight: 300; margin: 0; }
+    .vm-separator { height: 1px; background: var(--border); margin: 1rem 0; }
+    .team-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+    .chip {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: rgba(0,200,160,0.07);
+      border: 1px solid rgba(0,200,160,0.18);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+    }
+
+    /* ═══════════════════════════════════════════
+       SERVICES
+    ═══════════════════════════════════════════ */
+    #services { background: var(--bg); }
+    .services-header { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      group: true;
+    }
+    .service-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,200,160,0.1);
+    }
+    .service-card.featured {
+      background: linear-gradient(135deg, var(--surface2) 0%, rgba(0,200,160,0.05) 100%);
+      border-color: rgba(0,200,160,0.4);
+    }
+    .service-card.featured::before {
+      content: 'POPULER';
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--accent);
+      color: #001a12;
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.65rem;
+      border-radius: 100px;
+    }
+    .service-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.25rem;
+    }
+    .service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+    .service-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .service-card p { font-size: 0.9rem; color: var(--muted); font-weight: 300; line-height: 1.65; }
+    .service-features { list-style: none; margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .service-features li {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .service-features li::before { content: '→'; color: var(--accent); }
+    .service-arrow {
+      position: absolute; bottom: 1.5rem; right: 1.5rem;
+      width: 36px; height: 36px;
+      background: rgba(0,200,160,0.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      color: var(--accent);
+      transition: background var(--transition), transform var(--transition);
+    }
+    .service-card:hover .service-arrow { background: var(--accent); color: #001a12; transform: rotate(-45deg); }
+
+    /* ═══════════════════════════════════════════
+       WHY US (between services & contact)
+    ═══════════════════════════════════════════ */
+    .why-strip {
+      background: var(--bg2);
+      padding: 4rem 5%;
+    }
+    .why-strip-inner { max-width: 1100px; margin: 0 auto; }
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .why-item {
+      border-left: 2px solid var(--border);
+      padding-left: 1.25rem;
+      transition: border-color var(--transition);
+    }
+    .why-item:hover { border-color: var(--accent); }
+    .why-item .wi-icon { font-size: 1.6rem; margin-bottom: 0.75rem; }
+    .why-item h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .why-item p { font-size: 0.85rem; color: var(--muted); font-weight: 300; }
+
+    /* ═══════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════ */
+    #contact { background: var(--bg); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      margin-top: 3.5rem;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .contact-item-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: rgba(0,200,160,0.1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .contact-item-text h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .contact-item-text p { font-size: 0.9rem; color: var(--muted); font-weight: 300; }
+    .contact-socials { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+    .social-btn {
+      width: 40px; height: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      color: var(--muted);
+      transition: border-color var(--transition), color var(--transition), background var(--transition);
+    }
+    .social-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,200,160,0.07); }
+
+    /* FORM */
+    .contact-form {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-form::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+    }
+    .contact-form h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.75rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1.1rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--muted); letter-spacing: 0.04em; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--heading);
+      outline: none;
+      transition: border-color var(--transition);
+      width: 100%;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { min-height: 100px; }
+    .form-group select option { background: var(--surface); }
+    .form-submit {
+      width: 100%;
+      background: var(--accent);
+      color: #001a12;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 100px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+      margin-top: 0.5rem;
+    }
+    .form-submit:hover {
+      background: var(--accent2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,200,160,0.3);
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      color: var(--accent);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+    }
+    .form-success .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════ */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 3rem 5% 2rem;
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .footer-brand .nav-logo { font-size: 1.3rem; margin-bottom: 0.75rem; }
+    .footer-brand p { font-size: 0.85rem; color: var(--muted); max-width: 260px; font-weight: 300; }
+    .footer-links h5 {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-links li a { font-size: 0.88rem; color: var(--muted); transition: color var(--transition); }
+    .footer-links li a:hover { color: var(--accent); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: var(--muted); }
+    .footer-bottom .footer-badge {
+      font-size: 0.75rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .footer-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+
+    /* ═══════════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.in-view { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ═══════════════════════════════════════════
+       MOBILE
+    ═══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; flex-direction: column; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(5,10,14,0.97); padding: 1.5rem; gap: 1.25rem; border-bottom: 1px solid var(--border); }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+      .services-grid { grid-template-columns: 1fr; }
+      .why-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-stats { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    <div class="nav-logo">Bagas<span>Aice</span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="active">Beranda</a></li>
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#services">Layanan</a></li>
+      <li><a href="#contact" class="nav-cta">Hubungi Kami</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <section id="home">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Solusi Digital Terpercaya
+    </div>
+
+    <h1 class="hero-title">
+      Transformasi Digital<br>
+      <span class="accent-text">Bisnis Anda</span>
+    </h1>
+
+    <p class="hero-sub">
+      NexaCore menghadirkan solusi cloud computing, pengembangan software, dan keamanan siber kelas enterprise untuk UMKM dan perusahaan berkembang.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#services"><button class="btn-primary">Lihat Layanan</button></a>
+      <a href="#about"><button class="btn-outline">Tentang Kami</button></a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">200+</div>
+        <div class="stat-label">Klien Aktif</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Uptime SLA</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5 Thn</div>
+        <div class="stat-label">Pengalaman</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Support</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+
+        <div class="about-visual">
+          <div class="about-card-main">
+            <h3 style="font-size:1.1rem; margin-bottom:1rem;">Infrastruktur Andal & Terukur</h3>
+            <p style="font-size:0.88rem; color:var(--muted); font-weight:300; margin-bottom:1rem;">
+              Dibangun di atas arsitektur cloud modern yang memastikan ketersediaan tinggi dan performa optimal.
+            </p>
+            <div class="about-icon-grid">
+              <div class="about-icon-item"><span class="icon"></span>Cloud Hosting</div>
+              <div class="about-icon-item"><span class="icon"></span>SSL & Security</div>
+              <div class="about-icon-item"><span class="icon"></span>CDN Global</div>
+              <div class="about-icon-item"><span class="icon"></span>Monitoring</div>
+            </div>
+          </div>
+          <div class="about-floating-tag">★ ISO 27001 Certified</div>
+        </div>
+
+        <div class="about-content">
+          <span class="section-tag">Tentang Kami</span>
+          <h2 class="section-title">Kami Membangun<br>Masa Depan Digital</h2>
+          <div class="divider"></div>
+          <p>
+            BagasAice adalah perusahaan teknologi yang berdiri sejak 2019, berkantor pusat di Surakarta, Indonesia. Kami hadir untuk membantu bisnis dari skala UMKM hingga enterprise bertransformasi ke era digital secara efisien dan aman.
+          </p>
+          <p>
+            Tim kami terdiri dari lebih dari 30 profesional berpengalaman di bidang cloud architecture, software engineering, dan keamanan siber.
+          </p>
+
+          <div class="vm-block">
+            <h4> Visi</h4>
+            <p>Menjadi mitra transformasi digital terpercaya bagi setiap bisnis di Indonesia pada 2030.</p>
+            <div class="vm-separator"></div>
+            <h4> Misi</h4>
+            <p>Memberikan solusi teknologi inovatif, terjangkau, dan berkelanjutan yang meningkatkan efisiensi operasional dan daya saing klien kami.</p>
+          </div>
+
+          <div class="team-chips">
+            <span class="chip"> Top 10 IT Company Jawa Timur</span>
+            <span class="chip"> AWS Partner</span>
+            <span class="chip"> ISO 27001</span>
+            <span class="chip">	24/7 Support</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="section-inner">
+      <div class="services-header">
+        <div>
+          <span class="section-tag">Layanan Kami</span>
+          <h2 class="section-title reveal">Solusi Lengkap<br>untuk Bisnis Modern</h2>
+          <div class="divider"></div>
+        </div>
+        <p class="section-lead reveal reveal-delay-1" style="max-width:300px;">
+          Dari infrastruktur cloud hingga keamanan digital, kami siap mendampingi pertumbuhan bisnis Anda.
+        </p>
+      </div>
+
+      <div class="services-grid">
+
+        <div class="service-card reveal">
+          <div class="service-num">01 ·</div>
+          <span class="service-icon"></span>
+          <h3>Cloud Infrastructure</h3>
+          <p>Provisioning, konfigurasi, dan manajemen infrastruktur cloud (AWS, GCP, Azure) yang scalable sesuai kebutuhan bisnis Anda.</p>
+          <ul class="service-features">
+            <li>EC2, S3, VPC Setup</li>
+            <li>Auto Scaling & Load Balancer</li>
+            <li>Disaster Recovery Plan</li>
+          </ul>
+          <div class="service-arrow">→</div>
+        </div>
+
+        <div class="service-card featured reveal reveal-delay-1">
+          <div class="service-num">02 ·</div>
+          <span class="service-icon"></span>
+          <h3>Web & App Development</h3>
+          <p>Pengembangan aplikasi web dan mobile yang modern, responsif, dan berperformance tinggi menggunakan teknologi terkini.</p>
+          <ul class="service-features">
+            <li>Full-Stack Web Development</li>
+            <li>Mobile App (iOS & Android)</li>
+            <li>API Integration & Microservices</li>
+          </ul>
+          <div class="service-arrow">→</div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">03 ·</div>
+          <span class="service-icon"></span>
+          <h3>Cybersecurity</h3>
+          <p>Perlindungan menyeluruh untuk aset digital bisnis Anda dengan audit keamanan, penetration testing, dan monitoring 24/7.</p>
+          <ul class="service-features">
+            <li>Vulnerability Assessment</li>
+            <li>Penetration Testing</li>
+            <li>Security Operations Center</li>
+          </ul>
+          <div class="service-arrow">→</div>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="service-num">04 ·</div>
+          <span class="service-icon"></span>
+          <h3>DevOps & CI/CD</h3>
+          <p>Otomatisasi pipeline deployment, containerisasi dengan Docker & Kubernetes, dan pengelolaan infrastruktur sebagai kode.</p>
+          <ul class="service-features">
+            <li>Docker & Kubernetes</li>
+            <li>GitHub Actions / Jenkins</li>
+            <li>Infrastructure as Code</li>
+          </ul>
+          <div class="service-arrow">→</div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">05 ·</div>
+          <span class="service-icon"></span>
+          <h3>Data Analytics & AI</h3>
+          <p>Transformasi data bisnis menjadi wawasan berharga dengan dashboard interaktif, machine learning, dan solusi AI terapan.</p>
+          <ul class="service-features">
+            <li>Business Intelligence Dashboard</li>
+            <li>Machine Learning Model</li>
+            <li>Data Pipeline & ETL</li>
+          </ul>
+          <div class="service-arrow">→</div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">06 ·</div>
+          <span class="service-icon"></span>
+          <h3>IT Consulting & Support</h3>
+          <p>Konsultasi strategis teknologi informasi, perencanaan arsitektur sistem, dan dukungan teknis operasional berkelanjutan.</p>
+          <ul class="service-features">
+            <li>IT Strategy Consulting</li>
+            <li>System Architecture Review</li>
+            <li>24/7 Helpdesk Support</li>
+          </ul>
+          <div class="service-arrow">→</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="why-strip">
+    <div class="why-strip-inner">
+      <span class="section-tag">Keunggulan Kami</span>
+      <h2 class="section-title" style="font-size:1.9rem; margin-top:0.5rem;">Mengapa Memilih BagasAice?</h2>
+      <div class="why-grid">
+        <div class="why-item reveal">
+          <div class="wi-icon"></div>
+          <h4>Respons Cepat</h4>
+          <p>SLA respons kurang dari 1 jam untuk semua insiden kritikal.</p>
+        </div>
+        <div class="why-item reveal reveal-delay-1">
+          <div class="wi-icon"></div>
+          <h4>Harga Transparan</h4>
+          <p>Tidak ada biaya tersembunyi. Paket fleksibel sesuai anggaran Anda.</p>
+        </div>
+        <div class="why-item reveal reveal-delay-2">
+          <div class="wi-icon"></div>
+          <h4>Tim Berpengalaman</h4>
+          <p>Engineer bersertifikat AWS, GCP, dan Azure siap melayani.</p>
+        </div>
+        <div class="why-item reveal reveal-delay-3">
+          <div class="wi-icon"></div>
+          <h4>Solusi Scalable</h4>
+          <p>Infrastruktur yang tumbuh bersama bisnis Anda tanpa hambatan.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="contact">
+    <div class="section-inner">
+      <span class="section-tag">Hubungi Kami</span>
+      <h2 class="section-title reveal">Mari Berdiskusi<br>Tentang Proyek Anda</h2>
+      <div class="divider"></div>
+
+      <div class="contact-grid">
+
+        <div class="contact-info reveal">
+          <p class="section-lead" style="margin-bottom:0.5rem;">
+            Kami siap membantu Anda menemukan solusi teknologi yang tepat. Hubungi tim kami melalui saluran di bawah ini.
+          </p>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📧</div>
+            <div class="contact-item-text">
+              <h4>Email</h4>
+              <p>ahmadbagasmahardika@student.uns.ac.id<br>support@bagasaice.id</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div class="contact-item-text">
+              <h4>Nomor Telepon</h4>
+              <p>+62 812 1612 2626	<br>+62 812 1612 2626 (WhatsApp)</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-text">
+              <h4>Alamat Kantor</h4>
+              <p>Jl. KI Singodio, Ponorogo<br>Jawa Timur, Indonesia 63492</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">🕐</div>
+            <div class="contact-item-text">
+              <h4>Jam Operasional</h4>
+              <p>Senin – Jumat: 08.00 – 17.00 WIB<br>On-call support: 24/7</p>
+            </div>
+          </div>
+
+          <div>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:0.75rem; font-weight:500;">Ikuti kami di:</p>
+            <div class="contact-socials">
+              <a href="#" class="social-btn" title="LinkedIn">in</a>
+              <a href="#" class="social-btn" title="Twitter">𝕏</a>
+              <a href="#" class="social-btn" title="Instagram">📸</a>
+              <a href="#" class="social-btn" title="GitHub">⌨</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form reveal reveal-delay-1" id="contactForm">
+          <h3>Kirim Pesan kepada Kami</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Nama Depan</label>
+              <input type="text" id="fname" placeholder="Bagas" />
+            </div>
+            <div class="form-group">
+              <label for="lname">Nama Belakang</label>
+              <input type="text" id="lname" placeholder="Aice" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Alamat Email</label>
+            <input type="email" id="email" placeholder="bagas@perusahaan.com" />
+          </div>
+          <div class="form-group">
+            <label for="phone">Nomor Telepon</label>
+            <input type="tel" id="phone" placeholder="+62 812 xxxx xxxx" />
+          </div>
+          <div class="form-group">
+            <label for="service">Layanan yang Diminati</label>
+            <select id="service">
+              <option value="">Pilih layanan...</option>
+              <option>Cloud Infrastructure</option>
+              <option>Web & App Development</option>
+              <option>Cybersecurity</option>
+              <option>DevOps & CI/CD</option>
+              <option>Data Analytics & AI</option>
+              <option>IT Consulting & Support</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Pesan</label>
+            <textarea id="message" placeholder="Ceritakan kebutuhan atau proyek Anda..."></textarea>
+          </div>
+          <button class="form-submit" onclick="submitForm()">Kirim Pesan →</button>
+
+          <div class="form-success" id="formSuccess">
+            <div class="success-icon">✅✅✅</div>
+            <h3>Pesan Terkirim!</h3>
+            <p style="color:var(--muted); font-size:0.9rem; font-weight:300; margin-top:0.5rem;">Tim kami akan menghubungi Anda dalam 1×24 jam kerja.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo">Bagas<span>Aice	</span></div>
+          <p>Mitra transformasi digital terpercaya untuk bisnis Indonesia yang ingin tumbuh di era cloud.</p>
+        </div>
+        <div class="footer-links">
+          <h5>Navigasi</h5>
+          <ul>
+            <li><a href="#home">Beranda</a></li>
+            <li><a href="#about">Tentang Kami</a></li>
+            <li><a href="#services">Layanan</a></li>
+            <li><a href="#contact">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Layanan</h5>
+          <ul>
+            <li><a href="#services">Cloud Infrastructure</a></li>
+            <li><a href="#services">Web Development</a></li>
+            <li><a href="#services">Cybersecurity</a></li>
+            <li><a href="#services">IT Consulting</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>Kontak</h5>
+          <ul>
+            <li><a href="mailto:ahmadbagasmahardika@student.uns.ac.id">ahmadbagasmahardika@student.uns.ac.id</a></li>
+            <li><a href="tel:+6281216122626">+62 812 1612 2626</a></li>
+            <li><a href="#">Jl. KI Singodito No.20 A</a></li>
+            <li><a href="#">Ponorogo, Jawa Timur 63492</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 BagasAice. Seluruh hak cipta dilindungi.</p>
+        <div class="footer-badge">
+          <span class="footer-badge-dot"></span>
+          Semua sistem beroperasi normal
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 30);
+      updateActiveNav();
+    });
+
+    function updateActiveNav() {
+      const sections = ['home','about','services','contact'];
+      const links = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+      let current = 'home';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 120) current = id;
+      });
+      links.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+      });
+    }
+
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+    });
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    function submitForm() {
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!email || !message) {
+        alert('Mohon isi setidaknya Email dan Pesan terlebih dahulu.');
+        return;
+      }
+      document.querySelector('.contact-form > *:not(#formSuccess)') && null;
+      // Hide form fields, show success
+      const form = document.getElementById('contactForm');
+      [...form.children].forEach(c => { if (c.id !== 'formSuccess') c.style.display = 'none'; });
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
